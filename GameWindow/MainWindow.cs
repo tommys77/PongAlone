@@ -21,7 +21,11 @@ namespace GameWindow
         public int xPos = 0;
         public int yPos = 0;
         public int livesLeft = 3;
-        public int score = 0;
+        public int score = 8;
+        private int highscore = 0;
+
+
+        List<PictureBox> balls = new List<PictureBox>();
 
         #endregion
 
@@ -41,7 +45,10 @@ namespace GameWindow
             yPos = batter.Location.Y;
             tb_Lives.Text = livesLeft.ToString();
             tb_Score.Text = score.ToString();
+            balls.Add(ball);
         }
+
+
 
         public void MoveBat(object sender, MouseEventArgs e)
         {
@@ -87,12 +94,12 @@ namespace GameWindow
             if (isPaused == true)
             {
                 Cursor.Show();
-                tb_Status.Text = "Paused";
+                lbl_Status.Text = "Paused";
             }
             else
             {
                 Cursor.Hide();
-                tb_Status.Clear();
+                lbl_Status.Text = "";
             }
         }
 
@@ -109,21 +116,47 @@ namespace GameWindow
             else return false;
         }
 
+
+        bool difficultyRaised = false;
+
+
         private void BallTimer_Tick(object sender, EventArgs e)
         {
             var location = ball.Location;
+
             var lost = LifeLost(ball.Location);
+
+
 
             if (!isPaused)
             {
+                if (livesLeft != 0)
+                {
+                    if (score % 10 == 0 && score != 0 && !difficultyRaised)
+                    {
+                        if (xSpeed > 0)
+                            xSpeed += 10;
+                        else xSpeed -= 10;
+                        if (ySpeed > 0)
+                            ySpeed += 10;
+                        else ySpeed -= 10;
+
+                        difficultyRaised = true;
+                    }
+
+                    if (score % 10 != 0)
+                    {
+                        difficultyRaised = false;
+                    }
+                }
+
+                statusTimer.Enabled = false;
+
                 if (lost)
                 {
                     if (livesLeft == 0)
                     {
-                        isPaused = true;
-                        GamePaused();
-                        tb_Status.Text = "Game Over!";
-                        livesLeft = 3;
+                        GameOver();
                     }
                     var rnd = new Random().Next(ball.Width * 2, playfield.Width - 2 * ball.Width);
                     ball.Location = new Point(rnd, 25);
@@ -131,19 +164,38 @@ namespace GameWindow
 
                 else if (!CollidedWithBat(location))
                 {
-                    if ((location.X >= playfield.Width - ball.Width || location.X <= ball.Width))
+                    if (((location.X >= playfield.Width - ball.Width && xSpeed > 0) || (location.X <= 0 && xSpeed < 0)))
                     {
                         xSpeed = -xSpeed;
                     }
-                    if (location.Y <= ball.Height)
+                    if (location.Y <= 0 && ySpeed < 0)
                     {
                         ySpeed = -ySpeed;
                     }
                 }
 
-                else ySpeed = -ySpeed;
+                else
+                {
+                    ySpeed = -ySpeed;
+                }
+
                 ball.Location = new Point(ball.Location.X + xSpeed, ball.Location.Y + ySpeed);
+
             }
+            statusTimer.Enabled = true;
+        }
+
+        private void GameOver()
+        {
+            isPaused = true;
+            GamePaused();
+            if (score > highscore)
+            {
+                highscore = score;
+                lbl_highscore.Text = score.ToString();
+            }
+            tb_Status.Text = "Game Over!";
+            livesLeft = 3;
         }
 
         // Updates the game's score and life count.
@@ -159,7 +211,8 @@ namespace GameWindow
             if (((location.X > batter.Location.X && location.X < batter.Location.X + batter.Width)
                  || (location.X + ball.Width > batter.Location.X
                  && location.X + ball.Width < batter.Location.X + batter.Width))
-                 && ball.Bottom + ball.Height/3 > batter.Top)
+                 && ball.Bottom + ball.Height / 3 > batter.Top
+                 && ySpeed > 0)
             {
                 score++;
                 UpdateGameStatus();
@@ -168,15 +221,47 @@ namespace GameWindow
             return false;
         }
 
+
         private void Btn_Play_Click(object sender, EventArgs e)
         {
             isPaused = false;
             GamePaused();
+            tb_Status.Clear();
             ball.Location = new Point(new Random().Next(ball.Width * 2, playfield.Width - 2 * ball.Width), 2 * ball.Height);
+
+            //if (twoBallsEnabled)
+            //{
+            //    PictureBox ball2 = ball;
+            //    ball2.Location = new Point(new Random().Next(ball2.Width * 2, playfield.Width - 2 * ball2.Width), 2 * ball2.Height);
+            //    balls.Add(ball2);
+            //}
+
             livesLeft = 3;
             score = 0;
             UpdateGameStatus();
             playfield.Focus();
         }
+
+        private void statusTimer_Tick(object sender, EventArgs e)
+        {
+            if (isPaused && lbl_Status.Visible)
+            {
+                lbl_Status.Visible = false;
+            }
+            else lbl_Status.Visible = true;
+        }
+
+
+        //private void btn_two_balls_Click(object sender, EventArgs e)
+        //{
+        //    twoBallsEnabled = !twoBallsEnabled;
+
+        //    if (twoBallsEnabled)
+        //    {
+        //        btn_two_balls.Text = "Off";
+        //    }
+        //    else btn_two_balls.Text = "On";
+        //}
     }
 }
+
