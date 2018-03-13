@@ -43,6 +43,7 @@
             this.statusTimer = new System.Windows.Forms.Timer(this.components);
             this.lbl_header_highscore = new System.Windows.Forms.Label();
             this.lbl_highscore = new System.Windows.Forms.Label();
+            this.cb_cheatmode = new System.Windows.Forms.CheckBox();
             this.playfield.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ball)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.batter)).BeginInit();
@@ -181,11 +182,23 @@
             this.lbl_highscore.TabIndex = 14;
             this.lbl_highscore.Text = "0";
             // 
+            // cb_cheatmode
+            // 
+            this.cb_cheatmode.AutoSize = true;
+            this.cb_cheatmode.Location = new System.Drawing.Point(29, 432);
+            this.cb_cheatmode.Name = "cb_cheatmode";
+            this.cb_cheatmode.Size = new System.Drawing.Size(83, 17);
+            this.cb_cheatmode.TabIndex = 15;
+            this.cb_cheatmode.Text = "Cheat mode";
+            this.cb_cheatmode.UseVisualStyleBackColor = true;
+            this.cb_cheatmode.CheckedChanged += new System.EventHandler(this.cb_cheatmode_CheckedChanged);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 475);
+            this.Controls.Add(this.cb_cheatmode);
             this.Controls.Add(this.lbl_highscore);
             this.Controls.Add(this.lbl_header_highscore);
             this.Controls.Add(this.lbl_Status);
@@ -197,8 +210,8 @@
             this.Controls.Add(this.tb_Status);
             this.Controls.Add(this.playfield);
             this.Name = "MainWindow";
-            this.Text = "Form1";
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainWindow_KeyPress);
+            this.Text = "Pong Alone";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyUp);
             this.playfield.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ball)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.batter)).EndInit();
@@ -223,6 +236,7 @@
         private System.Windows.Forms.Timer statusTimer;
         private System.Windows.Forms.Label lbl_header_highscore;
         private System.Windows.Forms.Label lbl_highscore;
+        private System.Windows.Forms.CheckBox cb_cheatmode;
     }
 }
 

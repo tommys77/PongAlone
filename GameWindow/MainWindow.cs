@@ -16,14 +16,12 @@ namespace GameWindow
 
         private bool isPaused;
 
-        private int xSpeed = 10;
-        private int ySpeed = -10;
         public int xPos = 0;
         public int yPos = 0;
         public int livesLeft = 3;
         public int score = 8;
         private int highscore = 0;
-
+        private bool cheatmode = false;
 
         List<PictureBox> balls = new List<PictureBox>();
 
@@ -36,7 +34,7 @@ namespace GameWindow
             this.KeyPreview = true;
             InitializeGame();
             isPaused = true;
-            GamePaused();
+            PauseGame();
         }
 
         private void InitializeGame()
@@ -47,8 +45,6 @@ namespace GameWindow
             tb_Score.Text = score.ToString();
             balls.Add(ball);
         }
-
-
 
         public void MoveBat(object sender, MouseEventArgs e)
         {
@@ -68,37 +64,25 @@ namespace GameWindow
             Cursor.Show();
         }
 
-        private void MainWindow_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            var key = e.KeyChar;
-
-            const char p = 'p';
-
-            switch (key)
-            {
-                case p:
-                    isPaused = !isPaused;
-                    GamePaused();
-                    break;
-            }
-        }
-
         private void Restart()
         {
-            xSpeed = 10;
-            ySpeed = 10;
+            Settings.DefaultSpeedSettings();
+            livesLeft = 3;
+            score = 0;
         }
 
-        private void GamePaused()
+        private void PauseGame()
         {
             if (isPaused == true)
             {
                 Cursor.Show();
+                ballTimer.Enabled = false;
                 lbl_Status.Text = "Paused";
             }
             else
             {
                 Cursor.Hide();
+                ballTimer.Enabled = true;
                 lbl_Status.Text = "";
             }
         }
@@ -119,35 +103,18 @@ namespace GameWindow
 
         bool difficultyRaised = false;
 
-
         private void BallTimer_Tick(object sender, EventArgs e)
         {
             var location = ball.Location;
-
             var lost = LifeLost(ball.Location);
-
-
 
             if (!isPaused)
             {
-                if (livesLeft != 0)
+                CheckIfDifficultyNeedsRaised();
+
+                if (score % 10 != 0)
                 {
-                    if (score % 10 == 0 && score != 0 && !difficultyRaised)
-                    {
-                        if (xSpeed > 0)
-                            xSpeed += 10;
-                        else xSpeed -= 10;
-                        if (ySpeed > 0)
-                            ySpeed += 10;
-                        else ySpeed -= 10;
-
-                        difficultyRaised = true;
-                    }
-
-                    if (score % 10 != 0)
-                    {
-                        difficultyRaised = false;
-                    }
+                    difficultyRaised = false;
                 }
 
                 statusTimer.Enabled = false;
@@ -164,32 +131,42 @@ namespace GameWindow
 
                 else if (!CollidedWithBat(location))
                 {
-                    if (((location.X >= playfield.Width - ball.Width && xSpeed > 0) || (location.X <= 0 && xSpeed < 0)))
+                    if (((location.X >= playfield.Width - ball.Width && Settings.XSpeed > 0) || (location.X <= 0 && Settings.XSpeed < 0)))
                     {
-                        xSpeed = -xSpeed;
+                        Settings.ReverseX();
                     }
-                    if (location.Y <= 0 && ySpeed < 0)
+                    if (location.Y <= 0 && Settings.YSpeed < 0)
                     {
-                        ySpeed = -ySpeed;
+                        Settings.ReverseY();
                     }
                 }
 
                 else
                 {
-                    ySpeed = -ySpeed;
+                    Settings.ReverseY();
                 }
 
-                ball.Location = new Point(ball.Location.X + xSpeed, ball.Location.Y + ySpeed);
+                ball.Location = new Point(ball.Location.X + Settings.XSpeed, ball.Location.Y + Settings.YSpeed);
 
             }
             statusTimer.Enabled = true;
         }
 
+        private void CheckIfDifficultyNeedsRaised()
+        {
+            if ((livesLeft != 0 && score % 10 == 0 && score != 0 && !difficultyRaised))
+            {
+                Settings.IncreaseSpeed();
+                difficultyRaised = true;
+            }
+        }
+
         private void GameOver()
         {
             isPaused = true;
-            GamePaused();
-            if (score > highscore)
+            PauseGame();
+
+            if (score > highscore && !cheatmode)
             {
                 highscore = score;
                 lbl_highscore.Text = score.ToString();
@@ -211,8 +188,8 @@ namespace GameWindow
             if (((location.X > batter.Location.X && location.X < batter.Location.X + batter.Width)
                  || (location.X + ball.Width > batter.Location.X
                  && location.X + ball.Width < batter.Location.X + batter.Width))
-                 && ball.Bottom + ball.Height / 3 > batter.Top
-                 && ySpeed > 0)
+                 && ball.Bottom + ball.Height / 3 > playfield.Height - batter.Height
+                 && Settings.YSpeed > 0)
             {
                 score++;
                 UpdateGameStatus();
@@ -225,9 +202,12 @@ namespace GameWindow
         private void Btn_Play_Click(object sender, EventArgs e)
         {
             isPaused = false;
-            GamePaused();
+            PauseGame();
             tb_Status.Clear();
             ball.Location = new Point(new Random().Next(ball.Width * 2, playfield.Width - 2 * ball.Width), 2 * ball.Height);
+            Restart();
+            UpdateGameStatus();
+            playfield.Focus();
 
             //if (twoBallsEnabled)
             //{
@@ -236,10 +216,6 @@ namespace GameWindow
             //    balls.Add(ball2);
             //}
 
-            livesLeft = 3;
-            score = 0;
-            UpdateGameStatus();
-            playfield.Focus();
         }
 
         private void statusTimer_Tick(object sender, EventArgs e)
@@ -249,6 +225,37 @@ namespace GameWindow
                 lbl_Status.Visible = false;
             }
             else lbl_Status.Visible = true;
+        }
+
+        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            var key = e.KeyCode;
+
+
+            switch (key)
+            {
+                case Keys.P:
+                    isPaused = !isPaused;
+                    PauseGame();
+                    break;
+                case Keys.Add:
+                    if (cheatmode)
+                        Settings.IncreaseSpeed();
+                    break;
+                case Keys.Subtract:
+                    if (cheatmode)
+                        Settings.DecreaseSpeed();
+                    break;
+            }
+        }
+
+        private void cb_cheatmode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_cheatmode.Checked)
+            {
+                cheatmode = true;
+            }
+            else cheatmode = false;
         }
 
 
