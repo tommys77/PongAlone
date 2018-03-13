@@ -81,19 +81,16 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\727_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\football_PNG1080.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tennis_ground_pattern.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\tennis_ball.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\tennis_PNG10416.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ball_against_wall.wav" />
+    <Content Include="Resources\lost_life.wav" />
+    <Content Include="Resources\game_over.wav" />
+    <Content Include="Resources\ball_against_bat.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

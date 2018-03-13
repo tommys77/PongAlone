@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,6 +26,11 @@ namespace GameWindow
 
         List<PictureBox> balls = new List<PictureBox>();
 
+        private SoundPlayer fx_ball_against_wall;
+        private SoundPlayer fx_ball_against_bat;
+        private SoundPlayer fx_game_over;
+        private SoundPlayer fx_lost_life;
+
         #endregion
 
 
@@ -39,11 +45,20 @@ namespace GameWindow
 
         private void InitializeGame()
         {
+            PrepareSounds();
             xPos = batter.Location.X;
             yPos = batter.Location.Y;
             tb_Lives.Text = livesLeft.ToString();
             tb_Score.Text = score.ToString();
             balls.Add(ball);
+        }
+
+        private void PrepareSounds()
+        {
+            fx_ball_against_bat = new SoundPlayer(Properties.Resources.ball_against_bat);
+            fx_ball_against_wall = new SoundPlayer(Properties.Resources.ball_against_wall);
+            fx_game_over = new SoundPlayer(Properties.Resources.game_over);
+            fx_lost_life = new SoundPlayer(Properties.Resources.lost_life);
         }
 
         public void MoveBat(object sender, MouseEventArgs e)
@@ -87,19 +102,18 @@ namespace GameWindow
             }
         }
 
-
         // If the ball moves past the batter, you lose one life.
         private bool LifeLost(Point location)
         {
             if (location.Y > playfield.Height - batter.Height)
             {
+                fx_lost_life.Play();
                 livesLeft--;
                 UpdateGameStatus();
                 return true;
             }
             else return false;
         }
-
 
         bool difficultyRaised = false;
 
@@ -133,10 +147,12 @@ namespace GameWindow
                 {
                     if (((location.X >= playfield.Width - ball.Width && Settings.XSpeed > 0) || (location.X <= 0 && Settings.XSpeed < 0)))
                     {
+                        fx_ball_against_wall.Play();
                         Settings.ReverseX();
                     }
                     if (location.Y <= 0 && Settings.YSpeed < 0)
                     {
+                        fx_ball_against_wall.Play();
                         Settings.ReverseY();
                     }
                 }
@@ -163,6 +179,7 @@ namespace GameWindow
 
         private void GameOver()
         {
+            fx_game_over.Play();
             isPaused = true;
             PauseGame();
 
@@ -191,6 +208,7 @@ namespace GameWindow
                  && ball.Bottom + ball.Height / 3 > playfield.Height - batter.Height
                  && Settings.YSpeed > 0)
             {
+                fx_ball_against_bat.Play();
                 score++;
                 UpdateGameStatus();
                 return true;

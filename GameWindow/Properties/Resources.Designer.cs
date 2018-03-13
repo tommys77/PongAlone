@@ -61,22 +61,38 @@ namespace GameWindow.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.Drawing.Bitmap _727_icon {
+        internal static System.IO.UnmanagedMemoryStream ball_against_bat {
             get {
-                object obj = ResourceManager.GetObject("727_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetStream("ball_against_bat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.Drawing.Bitmap football_PNG1080 {
+        internal static System.IO.UnmanagedMemoryStream ball_against_wall {
             get {
-                object obj = ResourceManager.GetObject("football_PNG1080", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetStream("ball_against_wall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream game_over {
+            get {
+                return ResourceManager.GetStream("game_over", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream lost_life {
+            get {
+                return ResourceManager.GetStream("lost_life", resourceCulture);
             }
         }
         
@@ -86,16 +102,6 @@ namespace GameWindow.Properties {
         internal static System.Drawing.Bitmap tennis_ball {
             get {
                 object obj = ResourceManager.GetObject("tennis_ball", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap tennis_ground_pattern {
-            get {
-                object obj = ResourceManager.GetObject("tennis_ground_pattern", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

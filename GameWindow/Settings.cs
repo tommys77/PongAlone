@@ -22,7 +22,7 @@ namespace GameWindow
 
         public static void IncreaseSpeed()
         {
-            if (Math.Abs(XSpeed) != 40 || Math.Abs(YSpeed) != 40)
+            if (Math.Abs(XSpeed) < maxSpeed || Math.Abs(YSpeed) < maxSpeed)
             {
                 RaiseHorizontalSpeed();
                 RaiseVerticalSpeed();
@@ -68,11 +68,19 @@ namespace GameWindow
             {
                 xIsPositive = true;
                 XSpeed += speedIncrements;
+                if(XSpeed > maxSpeed)
+                {
+                    XSpeed = maxSpeed;
+                }
             }
             else if (XSpeed < 0)
             {
                 xIsPositive = false;
                 XSpeed -= speedIncrements;
+                if(Math.Abs(XSpeed) > maxSpeed)
+                {
+                    XSpeed = -maxSpeed;
+                }
             }
             else if (XSpeed == 0)
             {
@@ -90,11 +98,19 @@ namespace GameWindow
             {
                 yIsPositive = true;
                 YSpeed += speedIncrements;
+                if(YSpeed > maxSpeed)
+                {
+                    YSpeed = maxSpeed;
+                }
             }
             else if (YSpeed < 0)
             {
                 yIsPositive = false;
                 YSpeed -= speedIncrements;
+                if(Math.Abs(YSpeed) > maxSpeed)
+                {
+                    YSpeed = -maxSpeed;
+                }
             }
             else if (YSpeed == 0)
             {

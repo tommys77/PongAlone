@@ -37,13 +37,13 @@
             this.lbl_Lives = new System.Windows.Forms.Label();
             this.btn_Restart = new System.Windows.Forms.Button();
             this.playfield = new System.Windows.Forms.Panel();
-            this.ball = new System.Windows.Forms.PictureBox();
-            this.batter = new System.Windows.Forms.PictureBox();
             this.lbl_Status = new System.Windows.Forms.Label();
             this.statusTimer = new System.Windows.Forms.Timer(this.components);
             this.lbl_header_highscore = new System.Windows.Forms.Label();
             this.lbl_highscore = new System.Windows.Forms.Label();
             this.cb_cheatmode = new System.Windows.Forms.CheckBox();
+            this.ball = new System.Windows.Forms.PictureBox();
+            this.batter = new System.Windows.Forms.PictureBox();
             this.playfield.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ball)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.batter)).BeginInit();
@@ -125,30 +125,6 @@
             this.playfield.MouseLeave += new System.EventHandler(this.WhenTheMouseLeave);
             this.playfield.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveBat);
             // 
-            // ball
-            // 
-            this.ball.BackColor = System.Drawing.Color.Transparent;
-            this.ball.BackgroundImage = global::GameWindow.Properties.Resources.tennis_PNG10416;
-            this.ball.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ball.InitialImage = null;
-            this.ball.Location = new System.Drawing.Point(178, 130);
-            this.ball.Name = "ball";
-            this.ball.Size = new System.Drawing.Size(25, 25);
-            this.ball.TabIndex = 1;
-            this.ball.TabStop = false;
-            // 
-            // batter
-            // 
-            this.batter.BackColor = System.Drawing.Color.Black;
-            this.batter.Enabled = false;
-            this.batter.Location = new System.Drawing.Point(214, 378);
-            this.batter.Name = "batter";
-            this.batter.Size = new System.Drawing.Size(118, 24);
-            this.batter.TabIndex = 0;
-            this.batter.TabStop = false;
-            this.batter.MouseEnter += new System.EventHandler(this.WhenTheMouseEnter);
-            this.batter.MouseLeave += new System.EventHandler(this.WhenTheMouseLeave);
-            // 
             // lbl_Status
             // 
             this.lbl_Status.BackColor = System.Drawing.Color.Transparent;
@@ -192,6 +168,30 @@
             this.cb_cheatmode.Text = "Cheat mode";
             this.cb_cheatmode.UseVisualStyleBackColor = true;
             this.cb_cheatmode.CheckedChanged += new System.EventHandler(this.cb_cheatmode_CheckedChanged);
+            // 
+            // ball
+            // 
+            this.ball.BackColor = System.Drawing.Color.Transparent;
+            this.ball.BackgroundImage = global::GameWindow.Properties.Resources.tennis_PNG10416;
+            this.ball.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ball.InitialImage = null;
+            this.ball.Location = new System.Drawing.Point(178, 130);
+            this.ball.Name = "ball";
+            this.ball.Size = new System.Drawing.Size(25, 25);
+            this.ball.TabIndex = 1;
+            this.ball.TabStop = false;
+            // 
+            // batter
+            // 
+            this.batter.BackColor = System.Drawing.Color.Black;
+            this.batter.Enabled = false;
+            this.batter.Location = new System.Drawing.Point(214, 378);
+            this.batter.Name = "batter";
+            this.batter.Size = new System.Drawing.Size(118, 24);
+            this.batter.TabIndex = 0;
+            this.batter.TabStop = false;
+            this.batter.MouseEnter += new System.EventHandler(this.WhenTheMouseEnter);
+            this.batter.MouseLeave += new System.EventHandler(this.WhenTheMouseLeave);
             // 
             // MainWindow
             // 
