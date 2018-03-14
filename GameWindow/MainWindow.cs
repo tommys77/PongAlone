@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace GameWindow
 {
@@ -26,10 +28,20 @@ namespace GameWindow
 
         List<PictureBox> balls = new List<PictureBox>();
 
-        private SoundPlayer fx_ball_against_wall;
-        private SoundPlayer fx_ball_against_bat;
-        private SoundPlayer fx_game_over;
-        private SoundPlayer fx_lost_life;
+        private const string BALL_AGAINST_BAT = @"C:\Users\Tommy\source\repos\PongAlone\GameWindow\Resources\ball_against_bat.wav";
+        private const string BALL_AGAINST_WALL = @"C:\Users\Tommy\source\repos\PongAlone\GameWindow\Resources\ball_against_wall.wav";
+        private const string GAME_OVER = @"C:\Users\Tommy\source\repos\PongAlone\GameWindow\Resources\game_over.wav";
+        private const string LOST_LIFE = @"C:\Users\Tommy\source\repos\PongAlone\GameWindow\Resources\lost_life.wav";
+
+        //private SoundPlayer fx_ball_against_wall;
+        //private SoundPlayer fx_ball_against_bat;
+        //private SoundPlayer fx_game_over;
+        //private SoundPlayer fx_lost_life;
+
+        private WindowsMediaPlayer fx_ball_against_wall;
+        private WindowsMediaPlayer fx_ball_against_bat;
+        private WindowsMediaPlayer fx_game_over;
+        private WindowsMediaPlayer fx_lost_life;
 
         #endregion
 
@@ -55,10 +67,19 @@ namespace GameWindow
 
         private void PrepareSounds()
         {
-            fx_ball_against_bat = new SoundPlayer(Properties.Resources.ball_against_bat);
-            fx_ball_against_wall = new SoundPlayer(Properties.Resources.ball_against_wall);
-            fx_game_over = new SoundPlayer(Properties.Resources.game_over);
-            fx_lost_life = new SoundPlayer(Properties.Resources.lost_life);
+
+            //fx_ball_against_bat = new SoundPlayer(Properties.Resources.ball_against_bat);
+            //fx_ball_against_wall = new SoundPlayer(Properties.Resources.ball_against_wall);
+            //fx_game_over = new SoundPlayer(Properties.Resources.game_over);
+            //fx_lost_life = new SoundPlayer(Properties.Resources.lost_life);
+
+            fx_ball_against_bat = new WindowsMediaPlayer();
+            fx_ball_against_wall = new WindowsMediaPlayer();
+            fx_game_over = new WindowsMediaPlayer();
+            fx_lost_life = new WindowsMediaPlayer();
+            //fx_ball_against_wall = new SoundPlayer(Properties.Resources.ball_against_wall);
+            //fx_game_over = new SoundPlayer(Properties.Resources.game_over);
+            //fx_lost_life = new SoundPlayer(Properties.Resources.lost_life);
         }
 
         public void MoveBat(object sender, MouseEventArgs e)
@@ -107,7 +128,7 @@ namespace GameWindow
         {
             if (location.Y > playfield.Height - batter.Height)
             {
-                fx_lost_life.Play();
+                fx_lost_life.URL = LOST_LIFE;
                 livesLeft--;
                 UpdateGameStatus();
                 return true;
@@ -147,12 +168,12 @@ namespace GameWindow
                 {
                     if (((location.X >= playfield.Width - ball.Width && Settings.XSpeed > 0) || (location.X <= 0 && Settings.XSpeed < 0)))
                     {
-                        fx_ball_against_wall.Play();
+                        fx_ball_against_wall.URL = BALL_AGAINST_WALL;
                         Settings.ReverseX();
                     }
                     if (location.Y <= 0 && Settings.YSpeed < 0)
                     {
-                        fx_ball_against_wall.Play();
+                        fx_ball_against_wall.URL = BALL_AGAINST_WALL;
                         Settings.ReverseY();
                     }
                 }
@@ -179,7 +200,7 @@ namespace GameWindow
 
         private void GameOver()
         {
-            fx_game_over.Play();
+            fx_game_over.URL = GAME_OVER;
             isPaused = true;
             PauseGame();
 
@@ -208,7 +229,7 @@ namespace GameWindow
                  && ball.Bottom + ball.Height / 3 > playfield.Height - batter.Height
                  && Settings.YSpeed > 0)
             {
-                fx_ball_against_bat.Play();
+                fx_ball_against_bat.URL = BALL_AGAINST_BAT;
                 score++;
                 UpdateGameStatus();
                 return true;
