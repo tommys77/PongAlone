@@ -25,6 +25,8 @@ namespace GameWindow
         public int score = 8;
         private int highscore = 0;
         private bool cheatmode = false;
+        private bool difficultyRaised = false;
+        private bool sfx_enabled = true;
 
         List<PictureBox> balls = new List<PictureBox>();
 
@@ -128,15 +130,16 @@ namespace GameWindow
         {
             if (location.Y > playfield.Height - batter.Height)
             {
-                fx_lost_life.URL = LOST_LIFE;
+                if (sfx_enabled)
+                {
+                    fx_lost_life.URL = LOST_LIFE;
+                }
                 livesLeft--;
                 UpdateGameStatus();
                 return true;
             }
             else return false;
         }
-
-        bool difficultyRaised = false;
 
         private void BallTimer_Tick(object sender, EventArgs e)
         {
@@ -168,12 +171,18 @@ namespace GameWindow
                 {
                     if (((location.X >= playfield.Width - ball.Width && Settings.XSpeed > 0) || (location.X <= 0 && Settings.XSpeed < 0)))
                     {
-                        fx_ball_against_wall.URL = BALL_AGAINST_WALL;
+                        if (sfx_enabled)
+                        {
+                            fx_ball_against_wall.URL = BALL_AGAINST_WALL;
+                        }
                         Settings.ReverseX();
                     }
                     if (location.Y <= 0 && Settings.YSpeed < 0)
                     {
-                        fx_ball_against_wall.URL = BALL_AGAINST_WALL;
+                        if (sfx_enabled)
+                        {
+                            fx_ball_against_wall.URL = BALL_AGAINST_WALL;
+                        }
                         Settings.ReverseY();
                     }
                 }
@@ -200,7 +209,10 @@ namespace GameWindow
 
         private void GameOver()
         {
-            fx_game_over.URL = GAME_OVER;
+            if (sfx_enabled)
+            {
+                fx_game_over.URL = GAME_OVER;
+            }
             isPaused = true;
             PauseGame();
 
@@ -229,7 +241,10 @@ namespace GameWindow
                  && ball.Bottom + ball.Height / 3 > playfield.Height - batter.Height
                  && Settings.YSpeed > 0)
             {
-                fx_ball_against_bat.URL = BALL_AGAINST_BAT;
+                if (sfx_enabled)
+                {
+                    fx_ball_against_bat.URL = BALL_AGAINST_BAT;
+                }
                 score++;
                 UpdateGameStatus();
                 return true;
@@ -285,6 +300,11 @@ namespace GameWindow
                     if (cheatmode)
                         Settings.DecreaseSpeed();
                     break;
+                case Keys.S:
+                    if (cb_soundfx.Checked == false)
+                        cb_soundfx.Checked = true;
+                    else cb_soundfx.Checked = false;
+                    break;
             }
         }
 
@@ -295,6 +315,11 @@ namespace GameWindow
                 cheatmode = true;
             }
             else cheatmode = false;
+        }
+
+        private void cb_soundfx_CheckedChanged(object sender, EventArgs e)
+        {
+            sfx_enabled = !sfx_enabled;
         }
 
 

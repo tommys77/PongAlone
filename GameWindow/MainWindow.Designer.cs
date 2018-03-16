@@ -37,13 +37,14 @@
             this.lbl_Lives = new System.Windows.Forms.Label();
             this.btn_Restart = new System.Windows.Forms.Button();
             this.playfield = new System.Windows.Forms.Panel();
+            this.ball = new System.Windows.Forms.PictureBox();
+            this.batter = new System.Windows.Forms.PictureBox();
             this.lbl_Status = new System.Windows.Forms.Label();
             this.statusTimer = new System.Windows.Forms.Timer(this.components);
             this.lbl_header_highscore = new System.Windows.Forms.Label();
             this.lbl_highscore = new System.Windows.Forms.Label();
             this.cb_cheatmode = new System.Windows.Forms.CheckBox();
-            this.ball = new System.Windows.Forms.PictureBox();
-            this.batter = new System.Windows.Forms.PictureBox();
+            this.cb_soundfx = new System.Windows.Forms.CheckBox();
             this.playfield.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ball)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.batter)).BeginInit();
@@ -125,6 +126,31 @@
             this.playfield.MouseLeave += new System.EventHandler(this.WhenTheMouseLeave);
             this.playfield.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MoveBat);
             // 
+            // ball
+            // 
+            this.ball.BackColor = System.Drawing.Color.Transparent;
+            this.ball.BackgroundImage = global::GameWindow.Properties.Resources.tennis_PNG10416;
+            this.ball.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ball.InitialImage = null;
+            this.ball.Location = new System.Drawing.Point(178, 130);
+            this.ball.Name = "ball";
+            this.ball.Size = new System.Drawing.Size(25, 25);
+            this.ball.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ball.TabIndex = 1;
+            this.ball.TabStop = false;
+            // 
+            // batter
+            // 
+            this.batter.BackColor = System.Drawing.Color.Black;
+            this.batter.Enabled = false;
+            this.batter.Location = new System.Drawing.Point(214, 378);
+            this.batter.Name = "batter";
+            this.batter.Size = new System.Drawing.Size(118, 24);
+            this.batter.TabIndex = 0;
+            this.batter.TabStop = false;
+            this.batter.MouseEnter += new System.EventHandler(this.WhenTheMouseEnter);
+            this.batter.MouseLeave += new System.EventHandler(this.WhenTheMouseLeave);
+            // 
             // lbl_Status
             // 
             this.lbl_Status.BackColor = System.Drawing.Color.Transparent;
@@ -161,7 +187,7 @@
             // cb_cheatmode
             // 
             this.cb_cheatmode.AutoSize = true;
-            this.cb_cheatmode.Location = new System.Drawing.Point(29, 432);
+            this.cb_cheatmode.Location = new System.Drawing.Point(130, 431);
             this.cb_cheatmode.Name = "cb_cheatmode";
             this.cb_cheatmode.Size = new System.Drawing.Size(83, 17);
             this.cb_cheatmode.TabIndex = 15;
@@ -169,35 +195,25 @@
             this.cb_cheatmode.UseVisualStyleBackColor = true;
             this.cb_cheatmode.CheckedChanged += new System.EventHandler(this.cb_cheatmode_CheckedChanged);
             // 
-            // ball
+            // cb_soundfx
             // 
-            this.ball.BackColor = System.Drawing.Color.Transparent;
-            this.ball.BackgroundImage = global::GameWindow.Properties.Resources.tennis_PNG10416;
-            this.ball.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ball.InitialImage = null;
-            this.ball.Location = new System.Drawing.Point(178, 130);
-            this.ball.Name = "ball";
-            this.ball.Size = new System.Drawing.Size(25, 25);
-            this.ball.TabIndex = 1;
-            this.ball.TabStop = false;
-            // 
-            // batter
-            // 
-            this.batter.BackColor = System.Drawing.Color.Black;
-            this.batter.Enabled = false;
-            this.batter.Location = new System.Drawing.Point(214, 378);
-            this.batter.Name = "batter";
-            this.batter.Size = new System.Drawing.Size(118, 24);
-            this.batter.TabIndex = 0;
-            this.batter.TabStop = false;
-            this.batter.MouseEnter += new System.EventHandler(this.WhenTheMouseEnter);
-            this.batter.MouseLeave += new System.EventHandler(this.WhenTheMouseLeave);
+            this.cb_soundfx.AutoSize = true;
+            this.cb_soundfx.Checked = true;
+            this.cb_soundfx.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_soundfx.Location = new System.Drawing.Point(29, 431);
+            this.cb_soundfx.Name = "cb_soundfx";
+            this.cb_soundfx.Size = new System.Drawing.Size(82, 17);
+            this.cb_soundfx.TabIndex = 16;
+            this.cb_soundfx.Text = "SFX On/Off";
+            this.cb_soundfx.UseVisualStyleBackColor = true;
+            this.cb_soundfx.CheckedChanged += new System.EventHandler(this.cb_soundfx_CheckedChanged);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 475);
+            this.Controls.Add(this.cb_soundfx);
             this.Controls.Add(this.cb_cheatmode);
             this.Controls.Add(this.lbl_highscore);
             this.Controls.Add(this.lbl_header_highscore);
@@ -237,6 +253,7 @@
         private System.Windows.Forms.Label lbl_header_highscore;
         private System.Windows.Forms.Label lbl_highscore;
         private System.Windows.Forms.CheckBox cb_cheatmode;
+        private System.Windows.Forms.CheckBox cb_soundfx;
     }
 }
 
